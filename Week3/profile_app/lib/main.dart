@@ -14,7 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.teal,
+            backgroundColor: Colors.teal,
+            cardColor: Colors.pink),
         useMaterial3: true,
       ),
       home: const MyHomePage(),
@@ -64,11 +67,14 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-        padding: EdgeInsets.all(16),
+    return Padding(
+        padding: const EdgeInsets.all(16),
         child: Text(
           "Employee Profile",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary),
         ));
   }
 }
