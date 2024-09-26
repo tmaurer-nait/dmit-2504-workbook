@@ -54,10 +54,14 @@ class _RandomDogImageState extends State<RandomDogImage> {
         (dogImageURL.trim() == "")
             ? const CircularProgressIndicator()
             : GestureDetector(
-                onTap: () {
+                onPanUpdate: (details) {
                   setState(() {
                     dogImageURL = '';
-                    likes++;
+                    if (details.delta.dx > 0) {
+                      likes++;
+                    } else if (details.delta.dx < 0) {
+                      dislikes++;
+                    }
                   });
                   getRandomUrl().then((url) {
                     setState(() {
@@ -66,18 +70,6 @@ class _RandomDogImageState extends State<RandomDogImage> {
                   });
                 },
                 child: Image.network(dogImageURL)),
-        TextButton(
-            onPressed: () {
-              setState(() {
-                dogImageURL = '';
-              });
-              getRandomUrl().then((url) {
-                setState(() {
-                  dogImageURL = url;
-                });
-              });
-            },
-            child: const Text("Get A New Dog")),
       ],
     );
   }
