@@ -56,7 +56,12 @@ class _UserSignupFormState extends State<UserSignupForm> {
                 : null,
             decoration: const InputDecoration(label: Text("username")),
           ), // Password Input
-          PasswordFormField(controller: _passwordController),
+          PasswordFormField(
+            controller: _passwordController,
+            validator: (value) => value == null || value.trim() == ""
+                ? "password cannot be empty"
+                : null,
+          ),
           ElevatedButton(
               onPressed: () {
                 // Validate the input
@@ -87,19 +92,16 @@ class PasswordFormField extends FormField<String> {
             key: key,
             onSaved: onSaved,
             validator: validator,
-            builder: (state) {
+            builder: (field) {
+              _PasswordFormFieldState state = field as _PasswordFormFieldState;
+              state._controller = controller;
+
               return TextFormField(
                 controller: controller,
                 obscureText: true,
                 enableSuggestions: false,
                 autocorrect: false,
-                validator: (value) {
-                  if (value == null || value.trim() == "") {
-                    return "Password must not be empty";
-                  } else {
-                    return null;
-                  }
-                },
+                validator: validator,
                 decoration: const InputDecoration(label: Text("password")),
                 // Required for correct validation of this field
                 onChanged: (value) {
@@ -107,4 +109,43 @@ class PasswordFormField extends FormField<String> {
                 },
               );
             });
+
+  // We can now override the state for our custom form field if necessary
+  @override
+  FormFieldState<String> createState() {
+    return _PasswordFormFieldState();
+  }
+}
+
+class _PasswordFormFieldState extends FormFieldState<String> {
+  TextEditingController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (_controller != null) {
+      _controller?.addListener(_controllerChanged);
+    }
+  }
+
+  void _controllerChanged() {
+    if (_controller != null) {
+      didChange(_controller?.text);
+    }
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    _controller?.text = '';
+  }
+
+  @override
+  void dispose() {
+    if (_controller != null) {
+      _controller?.removeListener(_controllerChanged);
+    }
+    super.dispose();
+  }
 }
