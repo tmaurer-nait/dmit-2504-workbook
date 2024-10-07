@@ -20,7 +20,7 @@ class _SettingsManagerState extends State<SettingsManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: _buildAppBar(), // back button is here
         body: Navigator(
           key: _navigatorKey,
           initialRoute: widget.optionPageRoute,
@@ -51,5 +51,20 @@ class _SettingsManagerState extends State<SettingsManager> {
           return page;
         },
         settings: settings);
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: const Text('App Settings'),
+      leading: IconButton(
+          onPressed: () {
+            if (_navigatorKey.currentState!.canPop()) {
+              _navigatorKey.currentState!.pop();
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
+          icon: const Icon(Icons.arrow_back)),
+    );
   }
 }
