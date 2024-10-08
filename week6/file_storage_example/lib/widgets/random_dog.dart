@@ -4,6 +4,8 @@ import 'package:http/http.dart';
 
 import 'dart:convert';
 
+import 'dart:io';
+
 class RandomDogImage extends StatefulWidget {
   const RandomDogImage({super.key});
 
@@ -33,6 +35,40 @@ class _RandomDogImageState extends State<RandomDogImage> {
     });
   }
 
+  Widget _buildDogImage() {
+    Widget childWidget;
+
+    if (dogImageURL != '') {
+      if (dogImageURL.startsWith('http')) {
+        childWidget = Image.network(dogImageURL);
+        // TODO: Save the Dog Image
+      } else {
+        childWidget = Image.file(File(dogImageURL));
+      }
+    } else {
+      childWidget = const CircularProgressIndicator();
+    }
+
+    return GestureDetector(
+        onTap: () {
+          getRandomUrl().then((url) {
+            setState(() {
+              likes++;
+              dogImageURL = url;
+            });
+          });
+        },
+        onLongPress: () {
+          getRandomUrl().then((url) {
+            setState(() {
+              dislikes++;
+              dogImageURL = url;
+            });
+          });
+        },
+        child: childWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,25 +87,7 @@ class _RandomDogImageState extends State<RandomDogImage> {
             )
           ],
         ),
-        (dogImageURL.trim() == "")
-            ? const CircularProgressIndicator()
-            : GestureDetector(
-                onPanUpdate: (details) {
-                  setState(() {
-                    dogImageURL = '';
-                    if (details.delta.dx > 0) {
-                      likes++;
-                    } else if (details.delta.dx < 0) {
-                      dislikes++;
-                    }
-                  });
-                  getRandomUrl().then((url) {
-                    setState(() {
-                      dogImageURL = url;
-                    });
-                  });
-                },
-                child: Image.network(dogImageURL)),
+        _buildDogImage(),
       ],
     );
   }
