@@ -1,0 +1,21 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "dmit2504tmaurerinclass",
+          "appId": "1:385815855536:android:1c38c130ed9c521d7f9675",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "dmit2504tmaurerinclass",
+          "configurations": {
+            "android": "1:385815855536:android:1c38c130ed9c521d7f9675"
+          }
+        }
+      }
+    }
+  }
+}
