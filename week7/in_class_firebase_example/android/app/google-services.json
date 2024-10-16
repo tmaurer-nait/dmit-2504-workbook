@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "385815855536",
-    "project_id": "dmit2504tmaurerinclass",
-    "storage_bucket": "dmit2504tmaurerinclass.appspot.com"
+    "project_number": "1070163099549",
+    "project_id": "dmit2504test",
+    "storage_bucket": "dmit2504test.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:385815855536:android:b415f8d2864d8ff37f9675",
-        "android_client_info": {
-          "package_name": "com.example.in_class_"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQtp5TftkTSmgTxaIAiq0x6XagPD1hI4A"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:385815855536:android:1c38c130ed9c521d7f9675",
+        "mobilesdk_app_id": "1:1070163099549:android:069490258364ef7df9b974",
         "android_client_info": {
           "package_name": "com.example.in_class_firebase_example"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBQtp5TftkTSmgTxaIAiq0x6XagPD1hI4A"
+          "current_key": "AIzaSyDjDwIc_vxt4JQP6y7czz1HlfIS-Ht3oiw"
         }
       ],
       "services": {

@@ -22,6 +22,16 @@ class ApplicationState extends ChangeNotifier {
     _user = user;
   }
 
+  // TODO: Track the todos (get, set)
+
+  // TODO: fetch todos helper function
+
+  // TODO: Update todos
+
+  // TODO: insert todos
+
+  // TODO: delete todos
+
   Future<void> init() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -37,6 +47,8 @@ class ApplicationState extends ChangeNotifier {
 
         // Update the app state to store user info
         this.user = user;
+
+        // TODO: Fetch the todos when logged in
       } else {
         _loggedIn = false;
       }
