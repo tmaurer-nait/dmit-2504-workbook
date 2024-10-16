@@ -13,6 +13,15 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
+  User? _user;
+  User? get user => _user;
+  set user(User? user) {
+    if (user == null) {
+      throw ArgumentError('Cannot set the user to null');
+    }
+    _user = user;
+  }
+
   Future<void> init() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -25,6 +34,9 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
+
+        // Update the app state to store user info
+        this.user = user;
       } else {
         _loggedIn = false;
       }

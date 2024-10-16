@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:in_class_firebase_example/home_page.dart';
 import 'app_state.dart';
 import 'firebase_options.dart';
+import 'todo_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,6 +66,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       routes: routes,
+      onGenerateRoute: (settings) {
+        if (settings.name == '/todos') {
+          // if logged in show todo page
+          if (authAppState.loggedIn) {
+            return MaterialPageRoute(builder: (context) {
+              return TodoPage(appState: authAppState);
+            });
+          } else {
+            // else show home page
+            return MaterialPageRoute(builder: (context) {
+              return HomePage(authAppState: authAppState);
+            });
+          }
+        }
+        return null;
+      },
     );
   }
 }
