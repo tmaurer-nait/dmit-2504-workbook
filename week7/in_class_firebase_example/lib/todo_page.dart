@@ -42,19 +42,35 @@ class _TodoPageState extends State<TodoPage> {
     return ListView.builder(
       itemBuilder: (context, index) {
         final todo = todos[index];
-        // TODO: Wrap in dismissable
-        return ListTile(
-          // TODO: Style this text
-          title: Text(todo.description),
-          shape: const Border(
-            bottom: BorderSide(color: Colors.grey),
+        return Dismissible(
+          key: UniqueKey(),
+          child: ListTile(
+            title: Text(
+              todo.description,
+              style: todo.completed
+                  ? const TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      fontStyle: FontStyle.italic)
+                  : null,
+            ),
+            shape: const Border(
+              bottom: BorderSide(color: Colors.grey),
+            ),
+            trailing: Checkbox(
+                value: todo.completed,
+                onChanged: (value) {
+                  setState(() {
+                    todo.completed = value!;
+                    widget.appState.updateTodo(todo: todo);
+                  });
+                }),
           ),
-          trailing: Checkbox(
-              value: todo.completed,
-              onChanged: (value) {
-                todo.completed = value!;
-                //TODO connect to appState
-              }),
+          onDismissed: (direction) {
+            setState(() {
+              todos.removeAt(index);
+              widget.appState.deleteTodo(todo: todo);
+            });
+          },
         );
       },
       itemCount: todos.length,

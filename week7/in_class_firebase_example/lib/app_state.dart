@@ -66,11 +66,34 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
-  // TODO: Update todos
+  // Update todos
+  void updateTodo({required Todo todo}) {
+    if (user == null) {
+      throw StateError("Cannot update todos when user is null");
+    }
+
+    FirebaseFirestore.instance
+        .collection("/todos/${user!.uid}/todos")
+        .doc(todo.id)
+        .update(todo.toMap());
+  }
+
+  // delete todos
+  void deleteTodo({required Todo todo}) {
+    if (user == null) {
+      throw StateError("Cannot update todos when user is null");
+    }
+
+    FirebaseFirestore.instance
+        .collection("/todos/${user!.uid}/todos")
+        .doc(todo.id)
+        .delete()
+        .then((_) {
+      _todos!.remove(todo);
+    });
+  }
 
   // TODO: insert todos
-
-  // TODO: delete todos
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -87,8 +110,6 @@ class ApplicationState extends ChangeNotifier {
 
         // Update the app state to store user info
         this.user = user;
-
-        print("User ID: ${user.uid}");
 
         // Fetch the todos when logged in
         _fetchTodos();
