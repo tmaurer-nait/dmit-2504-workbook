@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
+
+import '../models/todo.dart';
 
 import 'firebase_options.dart';
 
@@ -22,9 +25,46 @@ class ApplicationState extends ChangeNotifier {
     _user = user;
   }
 
-  // TODO: Track the todos (get, set)
+  // Track the todos (get, set)
+  List<Todo>? _todos;
 
-  // TODO: fetch todos helper function
+  List<Todo>? get todos {
+    // Only allow get of this if the user is logged in and exists
+    if (user == null) {
+      throw StateError("Cannot get todos when user is null");
+    }
+    return _todos;
+  }
+
+  set todos(List<Todo>? todos) {
+    // User can't be null
+    if (user == null) {
+      throw StateError("Cannot set todos when user is null");
+    }
+    // Todos can't be null
+    if (todos == null) {
+      throw ArgumentError("Cannot set todos to null");
+    }
+
+    _todos = todos;
+  }
+
+  // fetch todos helper function
+  void _fetchTodos() {
+    if (user == null) {
+      throw StateError("Cannot fetch todos when user is null");
+    }
+
+    // Get todos from firestore
+    FirebaseFirestore.instance
+        .collection("/todos/${user!.uid}/todos")
+        .get()
+        .then((snapshot) {
+      todos = snapshot.docs.map((doc) {
+        return Todo.fromFirestore(doc);
+      }).toList();
+    });
+  }
 
   // TODO: Update todos
 
@@ -48,7 +88,10 @@ class ApplicationState extends ChangeNotifier {
         // Update the app state to store user info
         this.user = user;
 
-        // TODO: Fetch the todos when logged in
+        print("User ID: ${user.uid}");
+
+        // Fetch the todos when logged in
+        _fetchTodos();
       } else {
         _loggedIn = false;
       }

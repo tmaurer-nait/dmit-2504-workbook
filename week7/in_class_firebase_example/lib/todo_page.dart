@@ -17,8 +17,11 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   void initState() {
-    // TODO: Initialize the todos to something
     super.initState();
+    // Initialize the todos to something
+    setState(() {
+      _todoList = widget.appState.todos!;
+    });
   }
 
   @override
