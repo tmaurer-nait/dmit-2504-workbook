@@ -1,7 +1,7 @@
-import '../models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'state/user_cubit.dart';
 import 'pages/home_page.dart';
 
 void main() {
@@ -9,23 +9,23 @@ void main() {
   // will provide access to our User state object in the
   // Widget tree
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => User('James', 'Dean'),
-    child: const MainApp(),
-  ));
+  runApp(
+    const MainApp(),
+  );
 }
-
-User user = User('John', 'Day');
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: HomePage(),
+    return BlocProvider(
+      create: (context) => UserCubit(),
+      child: const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: HomePage(),
+          ),
         ),
       ),
     );
