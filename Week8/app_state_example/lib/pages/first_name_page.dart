@@ -1,14 +1,15 @@
 import '../models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../state/user_cubit.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FirstNamePage extends StatelessWidget {
+class FirstNamePage extends ConsumerWidget {
   const FirstNamePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Use the ref to listen to changes to the user state
+    final user = ref.watch(userProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('First Name Page'),
@@ -19,22 +20,14 @@ class FirstNamePage extends StatelessWidget {
             const SizedBox(
               height: 24.0,
             ),
-            BlocBuilder<UserCubit, UserState>(
-              builder: (context, state) {
-                return Text(
-                    'UserName: ${state.user.firstName} ${state.user.lastName}');
-              },
-            ),
+            Text('UserName: ${user.firstName} ${user.lastName}'),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         // Update our user firs name here
         onPressed: () {
-          // Access the user state from the context
-          var user = context.read<UserCubit>().state.user;
           user.firstName = 'UpdatedFirstName';
-          context.read<UserCubit>().updateUser(user);
         },
         child: const Icon(Icons.update),
       ),
