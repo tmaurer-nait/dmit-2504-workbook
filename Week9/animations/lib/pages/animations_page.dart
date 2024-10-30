@@ -69,7 +69,7 @@ class _AnimationsPageState extends State<AnimationsPage>
             const SizedBox(height: 110),
             TweenAnimationBuilder(
                 tween: IntTween(begin: 0, end: _tweenValue),
-                duration: const Duration(milliseconds: 30),
+                duration: const Duration(seconds: 3),
                 builder: (context, value, widget) {
                   return Transform.rotate(
                     angle: value / 100 * (2 * math.pi),
