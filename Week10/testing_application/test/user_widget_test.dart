@@ -16,7 +16,7 @@ void main() {
     );
   });
 
-  testWidgets("UserWidget should display name and email",
+  testWidgets("UserWidget should display name and email when button pressed",
       (WidgetTester tester) async {
     // Render the widget to the build context
     await tester.pumpWidget(app);
@@ -24,8 +24,18 @@ void main() {
     // Create the finders
     final nameFinder = find.text("Name: ${user.name}");
     final emailFinder = find.text("Email: tmaurer@nait.ca");
+    final fabFinder = find.byType(FloatingActionButton);
 
-    // Assertions
+    // On Initial render the text should not be visible
+    expect(nameFinder, findsNothing);
+    expect(emailFinder, findsNothing);
+
+    // press the button
+    await tester.tap(fabFinder);
+
+    // Pump to rerender the UI
+    await tester.pump(const Duration(seconds: 1));
+
     expect(nameFinder, findsOneWidget);
     expect(emailFinder, findsOneWidget);
   });
